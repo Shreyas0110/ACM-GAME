@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class Location : MonoBehaviour
 {
-    public Text GPSStatus;
-    public Text latitudeValue;
-    public Text longitudeValue;
-    public Text altitudeValue;
-    public Text horizontalAccuracyValue;
-    public Text timeStampValue;
+    public string GPSStatus;
+    public float latitudeValue;
+    public float longitudeValue;
+    public float altitudeValue;
+    public float horizontalAccuracyValue;
+    public double timeStampValue;
 
 
     // Start is called before the first frame update
@@ -22,8 +22,17 @@ public class Location : MonoBehaviour
     // Update is called once per frame
     IEnumerator GPSLoc()
     {
+        while (!UnityEditor.EditorApplication.isRemoteConnected)
+        {
+            yield return null;
+        }
+
+        Debug.Log('e');
+
         if (!Input.location.isEnabledByUser)
+        {
             yield break;
+        }
 
         Input.location.Start();
 
@@ -36,18 +45,18 @@ public class Location : MonoBehaviour
 
         if (maxWait < 1)
         {
-            GPSStatus.text = "Time Out";
+            GPSStatus = "Time Out";
             yield break;
         }
 
         if (Input.location.status == LocationServiceStatus.Failed)
         {
-            GPSStatus.text = "Unable to determine device location";
+            GPSStatus = "Unable to determine device location";
             yield break;
         }
         else
         {
-            GPSStatus.text = "Running";
+            GPSStatus = "Running";
             InvokeRepeating("UpdateGPSData", 0.5f, 1f);
         }
 
@@ -57,19 +66,19 @@ public class Location : MonoBehaviour
     {
         if (Input.location.status == LocationServiceStatus.Running)
         {
-            GPSStatus.text = "Running";
-            latitudeValue.text = Input.location.lastData.latitude.ToString();
-            longitudeValue.text = Input.location.lastData.longitude.ToString();
-            altitudeValue.text = Input.location.lastData.altitude.ToString();
-            horizontalAccuracyValue.text = Input.location.lastData.horizontalAccuracy.ToString();
-            timeStampValue.text = Input.location.lastData.timestamp.ToString();
+            GPSStatus = "Running";
+            latitudeValue= Input.location.lastData.latitude;
+            longitudeValue = Input.location.lastData.longitude;
+            altitudeValue = Input.location.lastData.altitude;
+            horizontalAccuracyValue = Input.location.lastData.horizontalAccuracy;
+            timeStampValue = Input.location.lastData.timestamp;
 
             Debug.Log(latitudeValue);
             Debug.Log(longitudeValue);
         }
         else
         {
-            GPSStatus.text = "Stop";
+            GPSStatus = "Stop";
         }
     }
 }
