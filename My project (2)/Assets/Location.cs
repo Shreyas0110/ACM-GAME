@@ -63,6 +63,9 @@ public class Location : MonoBehaviour
             altitudeValue.text = Input.location.lastData.altitude.ToString();
             horizontalAccuracyValue.text = Input.location.lastData.horizontalAccuracy.ToString();
             timeStampValue.text = Input.location.lastData.timestamp.ToString();
+
+            Debug.Log(latitudeValue);
+            Debug.Log(longitudeValue);
         }
         else
         {
