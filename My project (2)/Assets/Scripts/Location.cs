@@ -1,33 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Location : MonoBehaviour
 {
     public string GPSStatus;
-    public float latitudeValue;
-    public float longitudeValue;
-    public float altitudeValue;
-    public float horizontalAccuracyValue;
-    public double timeStampValue;
+    public float latitudeValue = 0;
+    public float longitudeValue = 0;
+    public float altitudeValue = 0;
+    public float horizontalAccuracyValue = 0;
+    public double timeStampValue = 0;
+
+    public float x;
+    public float y;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(GPSLoc());
+        //StartCoroutine(GPSLoc());
     }
 
     // Update is called once per frame
-    IEnumerator GPSLoc()
+    private void Update()
     {
-        while (!UnityEditor.EditorApplication.isRemoteConnected)
+        y = (latitudeValue - 37.00468f) / 0.00018182f + 89.2f;
+        x = (longitudeValue + 122.05699f) / 0.00018182f + 5.7f;
+        Vector3 position = new Vector3(x, y, -1f);
+        transform.position = position;
+    }
+    
+    /*IEnumerator GPSLoc()
+    {
+        while (!UnityEditor.EditorApplication.isRemoteConnected) 
         {
             yield return null;
         }
 
-        Debug.Log('e');
+        Debug.Log("Connected!");
 
         if (!Input.location.isEnabledByUser)
         {
@@ -59,7 +69,6 @@ public class Location : MonoBehaviour
             GPSStatus = "Running";
             InvokeRepeating("UpdateGPSData", 0.5f, 1f);
         }
-
     }
 
     private void UpdateGPSData()
@@ -81,4 +90,5 @@ public class Location : MonoBehaviour
             GPSStatus = "Stop";
         }
     }
+    */
 }
